@@ -3,9 +3,4 @@
         "--graphviz=build_dependencies_graph.dot"
     ],
     "cmake.useCMakePresets": "always",
-    "files.associations": {
-        ".fantomasignore": "ignore",
-        "*.pl": "prolog",
-        "xstring": "cpp"
-    },
 }
