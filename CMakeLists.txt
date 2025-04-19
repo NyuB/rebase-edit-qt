@@ -3,7 +3,10 @@ project(CppLearn LANGUAGES CXX)
 enable_testing()
 cmake_policy(SET CMP0135 NEW)
 
-add_executable(Main main.cpp)
+include(cmake/qt.cmake)
+qt_add_executable(Main main.cpp)
+target_link_qt_libraries(Main)
+
 add_library(Lib lib.cpp)
 target_include_directories(Lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

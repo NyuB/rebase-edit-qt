@@ -1,11 +1,15 @@
 PY=py
-CMAKE=cmake --preset default
+
+run: build/Main.exe
+	build/Main.exe
+
+build/Main.exe: build
 
 build: FORCE
-	$(CMAKE) --build build
+	cmake --build build --preset default 
 
 configure: FORCE
-	$(CMAKE) .
+	cmake --preset default .
 FORCE:
 	
 fmt:

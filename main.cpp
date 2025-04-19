@@ -1,7 +1,9 @@
 #include "lib.hpp"
+#include <QApplication>
 #include <iostream>
 
-int main(int argc, char const *argv[]) {
-  std::cout << nyub::lib::message() << std::endl;
-  return 0;
+int main(int argc, char **argv) {
+  std::cout << "Starting Application ..." << std::endl;
+  QApplication app(argc, argv);
+  return app.exec();
 }

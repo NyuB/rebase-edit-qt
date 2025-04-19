@@ -13,7 +13,7 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "clang"
+                "CMAKE_CXX_COMPILER": "g++"
             }
         }
     ],
@@ -21,7 +21,7 @@
         {
             "name": "default",
             "configurePreset": "default",
-            "configuration": "Debug"
+            "configuration": ""
         }
     ]
 }
