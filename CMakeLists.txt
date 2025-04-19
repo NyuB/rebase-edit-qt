@@ -4,7 +4,7 @@ enable_testing()
 cmake_policy(SET CMP0135 NEW)
 
 include(cmake/qt.cmake)
-qt_add_executable(Main main.cpp)
+qt_add_executable(Main main.cpp panel.cpp panel.ui)
 target_link_qt_libraries(Main)
 
 add_library(Lib lib.cpp)
