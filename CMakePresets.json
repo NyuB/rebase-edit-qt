@@ -21,7 +21,7 @@
         {
             "name": "default",
             "configurePreset": "default",
-            "configuration": "RelWithDebInfo"
+            "configuration": "Debug"
         }
     ]
 }
