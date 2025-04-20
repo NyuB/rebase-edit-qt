@@ -1,10 +1,11 @@
 #include "lib.hpp"
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <limits>
 
-TEST(HelloTest, TestSetup) { ASSERT_EQ(7 * 7, 49); }
+TEST(HelloTest, SimpleAssert) { ASSERT_EQ(7 * 7, 49); }
 
-TEST(HelloTest, Salto) { ASSERT_EQ(7 * 6, 42); }
+TEST(HelloTest, AssertThat) { ASSERT_THAT(7 * 6, ::testing::Eq(42)); }
 
 struct AddTestParam {
   int left;
