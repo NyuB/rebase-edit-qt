@@ -4,10 +4,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 function(target_link_qt_libraries Target)
-    target_link_libraries(${Target} PUBLIC
-        Qt::Core
-        Qt::Gui
-        Qt::UiTools
-        Qt::Widgets
-    )
+  target_link_libraries(${Target} PUBLIC Qt::Core Qt::Gui Qt::UiTools
+                                         Qt::Widgets)
 endfunction()
