@@ -19,7 +19,7 @@ class AddTest : public testing::TestWithParam<AddTestParam> {};
 
 TEST_P(AddTest, Add) {
   auto param = GetParam();
-  ASSERT_EQ(nyub::lib::add(param.left, param.right), param.expected);
+  ASSERT_EQ(param.left + param.right, param.expected);
 }
 
 INSTANTIATE_TEST_SUITE_P(HappyPaths, AddTest,
