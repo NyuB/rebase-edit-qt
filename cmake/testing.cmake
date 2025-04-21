@@ -13,5 +13,6 @@ include(GoogleTest)
 function(test_with_gtest TestTarget)
   target_link_libraries(${TestTarget} PRIVATE GTest::gtest_main)
   target_link_libraries(${TestTarget} PRIVATE GTest::gmock)
-  gtest_discover_tests(${TestTarget})
+  gtest_discover_tests(${TestTarget}
+                       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endfunction()
