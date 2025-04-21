@@ -29,6 +29,13 @@ TEST(RebaseFileEntry, ParseMissingMessage) {
             std::optional<RebaseFileEntry>{});
 }
 
+TEST(RebaseFileEntry, ParseMessageWithSpaces) {
+  std::string longMessage = "pick Sha1 A very long message with spaces";
+  auto expected = RebaseFileEntry{.sha1 = "Sha1",
+                                  .message = "A very long message with spaces"};
+  ASSERT_EQ(RebaseFileEntry::parse(longMessage), expected);
+}
+
 TEST(Todo, FromFileEntry) {
   auto fileEntry = RebaseFileEntry{.sha1 = "Sha1", .message = "message"};
   auto todo = Todo::from(fileEntry);

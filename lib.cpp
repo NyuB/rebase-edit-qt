@@ -14,25 +14,22 @@ Todo Todo::from(const RebaseFileEntry &fileEntry) {
 
 std::optional<RebaseFileEntry>
 RebaseFileEntry::parse(const std::string &gitLine) {
-  std::vector<std::string> splitted;
-  splitted.reserve(3);
-  std::string currentWord = "";
-  for (const auto &item : gitLine) {
-    if (item == ' ') {
-      splitted.push_back(currentWord);
-      currentWord = "";
-    } else {
-      currentWord += item;
-    }
-  }
-  splitted.push_back(currentWord);
-  if (splitted.size() < 3 || splitted.at(0) != "pick")
+  size_t firstSpace = gitLine.find(' ');
+  if (firstSpace == std::string::npos)
     return {};
-  return RebaseFileEntry{.sha1 = splitted.at(1), .message = splitted.at(2)};
+  size_t secondSpace = gitLine.find(' ', firstSpace + 1);
+  if (secondSpace == std::string::npos)
+    return {};
+  if (gitLine.substr(0, firstSpace) != "pick")
+    return {};
+
+  return RebaseFileEntry{
+      .sha1 = gitLine.substr(firstSpace + 1, secondSpace - firstSpace - 1),
+      .message = gitLine.substr(secondSpace + 1)};
 }
 
 std::ostream &operator<<(std::ostream &os, const RebaseFileEntry &entry) {
-  os << std::format("pick {} {}", entry.sha1, entry.message);
+  os << std::format("pick sha1={} message='{}'", entry.sha1, entry.message);
   return os;
 }
 
