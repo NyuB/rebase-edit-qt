@@ -12,6 +12,15 @@ Todo Todo::from(const RebaseFileEntry &fileEntry) {
   };
 }
 
+Todo::TodoList Todo::from(const RebaseFileEntry::RebaseFile &file) {
+  auto result = TodoList{};
+  result.reserve(file.size());
+  for (const auto &item : file) {
+    result.push_back(from(item));
+  }
+  return result;
+}
+
 std::optional<RebaseFileEntry>
 RebaseFileEntry::parse(const std::string &gitLine) {
   size_t firstSpace = gitLine.find(' ');

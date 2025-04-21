@@ -1,0 +1,22 @@
+#include "lib.hpp"
+#include "panel.hpp"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+using namespace nyub::rebase;
+
+class TestCallback : public TodoListCallback {
+public:
+  virtual void set(const Todo::TodoList &_) { m_called++; }
+  int m_called = 0;
+};
+
+TEST(PanelWidget, CallbackCalledWhenStartRebase) {
+  int argc = 0;
+  char **argv = nullptr;
+  QApplication app(argc, argv);
+  auto spy = std::make_shared<TestCallback>();
+  auto panel = PanelWidget(nullptr, Todo::TodoList{}, spy);
+  panel.startRebase();
+  ASSERT_EQ(spy->m_called, 1);
+}

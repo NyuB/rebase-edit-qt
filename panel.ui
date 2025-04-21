@@ -16,14 +16,24 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>150</x>
-     <y>120</y>
+     <x>160</x>
+     <y>10</y>
      <width>75</width>
      <height>24</height>
     </rect>
    </property>
    <property name="text">
-    <string>Click It !</string>
+    <string>Start rebase</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="todoList">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>40</y>
+     <width>391</width>
+     <height>251</height>
+    </rect>
    </property>
   </widget>
  </widget>

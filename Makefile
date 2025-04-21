@@ -1,12 +1,12 @@
 PY=py
 
 run: build/Main.exe
-	build/Main.exe
+	build/Main.exe test-rebase-file.txt
 
 build/Main.exe: build
 
 build: FORCE
-	cmake --build build --preset default 
+	cmake --build build --target Main --preset default 
 
 configure: FORCE
 	cmake --preset default .

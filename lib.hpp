@@ -1,3 +1,6 @@
+#ifndef NYUB_REBASE_LIB_HPP
+#define NYUB_REBASE_LIB_HPP
+
 #include <optional>
 #include <string>
 #include <vector>
@@ -25,6 +28,7 @@ struct Todo {
   std::string message;
   std::optional<std::string> renamed;
   static Todo from(const RebaseFileEntry &fileEntry);
+  static TodoList from(const RebaseFileEntry::RebaseFile &file);
   bool operator==(const Todo &other) const = default;
 };
 
@@ -35,3 +39,4 @@ TodoFile todoFile(const Todo::TodoList &todoList);
 
 } // namespace rebase
 } // namespace nyub
+#endif // NYUB_REBASE_LIB_HPP

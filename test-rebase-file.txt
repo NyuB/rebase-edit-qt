@@ -1,0 +1,4 @@
+pick 903a879 Start rebase cycle logic
+pick e44a1f3 Implement rename with an exec command
+pick 56cc367 Safer parsing
+pick 72b0d9d Parse message with spaces
