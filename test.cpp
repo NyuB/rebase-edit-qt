@@ -20,8 +20,7 @@ TEST(RebaseFileEntry, Parse) {
 TEST(Todo, FromFileEntry) {
   auto fileEntry = RebaseFileEntry{.sha1 = "Sha1", .message = "message"};
   auto todo = Todo::from(fileEntry);
-  auto expected =
-      Todo{.kind = "pick", .sha1 = "Sha1", .message = "message", .renamed = {}};
+  auto expected = Todo{.kind = "pick", .sha1 = "Sha1", .message = "message"};
   ASSERT_EQ(todo, expected);
 }
 
@@ -33,6 +32,16 @@ TEST(TodoFileEntry, FromTodoZero) {
 TEST(TodoFileEntry, FromTodoOne) {
   auto todo = Todo{.kind = "pick", .sha1 = "Sha1", .message = "message"};
   auto expected = TodoFile{"pick Sha1 message"};
+  ASSERT_EQ(todoFile(Todo::TodoList{todo}), expected);
+}
+
+TEST(TodoFileEntry, FromTodoRenamed) {
+  auto todo = Todo{.kind = "pick",
+                   .sha1 = "Sha1",
+                   .message = "message",
+                   .renamed = "renamed"};
+  auto expected =
+      TodoFile{"pick Sha1 message", "exec git commit --amend -m 'renamed'"};
   ASSERT_EQ(todoFile(Todo::TodoList{todo}), expected);
 }
 

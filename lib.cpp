@@ -36,6 +36,10 @@ TodoFile todoFile(const Todo::TodoList &fileEntry) {
   std::vector<std::string> result;
   for (const auto &item : fileEntry) {
     result.push_back(todoFileEntryFromTodo(item));
+    if (item.renamed.has_value()) {
+      result.push_back(
+          std::format("exec git commit --amend -m '{}'", item.renamed.value()));
+    }
   }
   return result;
 }
