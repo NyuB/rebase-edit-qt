@@ -2,13 +2,39 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <limits>
+#include <optional>
 
 using testing::Eq;
 using testing::Values;
-
-TEST(HelloTest, SimpleAssert) { ASSERT_EQ(7 * 7, 49); }
+using namespace nyub::rebase;
 
 TEST(HelloTest, AssertThat) { ASSERT_THAT(7 * 6, Eq(42)); }
+
+TEST(RebaseFileEntry, Parse) {
+  std::string gitLine = "pick Sha1 message";
+  auto entry = RebaseFileEntry::parse(gitLine);
+  auto expected = RebaseFileEntry{.sha1 = "Sha1", .message = "message"};
+  ASSERT_EQ(entry, expected);
+}
+
+TEST(Todo, FromFileEntry) {
+  auto fileEntry = RebaseFileEntry{.sha1 = "Sha1", .message = "message"};
+  auto todo = Todo::from(fileEntry);
+  auto expected =
+      Todo{.kind = "pick", .sha1 = "Sha1", .message = "message", .renamed = {}};
+  ASSERT_EQ(todo, expected);
+}
+
+TEST(TodoFileEntry, FromTodoZero) {
+  auto todos = Todo::TodoList{};
+  ASSERT_EQ(todoFile(todos), TodoFile{});
+}
+
+TEST(TodoFileEntry, FromTodoOne) {
+  auto todo = Todo{.kind = "pick", .sha1 = "Sha1", .message = "message"};
+  auto expected = TodoFile{"pick Sha1 message"};
+  ASSERT_EQ(todoFile(Todo::TodoList{todo}), expected);
+}
 
 struct AddTestParam {
   int left;
