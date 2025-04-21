@@ -1,6 +1,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+
 namespace nyub {
 namespace rebase {
 
@@ -9,8 +10,11 @@ struct RebaseFileEntry {
   using RebaseFile = std::vector<RebaseFileEntry>;
   std::string sha1;
   std::string message;
-  static RebaseFileEntry parse(const std::string &gitLine);
+  static std::optional<RebaseFileEntry> parse(const std::string &gitLine);
   bool operator==(const RebaseFileEntry &other) const = default;
+
+  friend std::ostream &operator<<(std::ostream &os,
+                                  const RebaseFileEntry &entry);
 };
 
 //! Work in progress on rebase items

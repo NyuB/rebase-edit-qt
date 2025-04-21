@@ -12,7 +12,8 @@ Todo Todo::from(const RebaseFileEntry &fileEntry) {
   };
 }
 
-RebaseFileEntry RebaseFileEntry::parse(const std::string &gitLine) {
+std::optional<RebaseFileEntry>
+RebaseFileEntry::parse(const std::string &gitLine) {
   std::vector<std::string> splitted;
   splitted.reserve(3);
   std::string currentWord = "";
@@ -25,7 +26,14 @@ RebaseFileEntry RebaseFileEntry::parse(const std::string &gitLine) {
     }
   }
   splitted.push_back(currentWord);
+  if (splitted.size() < 3 || splitted.at(0) != "pick")
+    return {};
   return RebaseFileEntry{.sha1 = splitted.at(1), .message = splitted.at(2)};
+}
+
+std::ostream &operator<<(std::ostream &os, const RebaseFileEntry &entry) {
+  os << std::format("pick {} {}", entry.sha1, entry.message);
+  return os;
 }
 
 std::string todoFileEntryFromTodo(const Todo &todo) {

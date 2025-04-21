@@ -17,6 +17,18 @@ TEST(RebaseFileEntry, Parse) {
   ASSERT_EQ(entry, expected);
 }
 
+TEST(RebaseFileEntry, ParseInvalidKind) {
+  std::string invalidKindLine = "unknown Sha1 message";
+  ASSERT_EQ(RebaseFileEntry::parse(invalidKindLine),
+            std::optional<RebaseFileEntry>{});
+}
+
+TEST(RebaseFileEntry, ParseMissingMessage) {
+  std::string missingMessage = "pick Sha1";
+  ASSERT_EQ(RebaseFileEntry::parse(missingMessage),
+            std::optional<RebaseFileEntry>{});
+}
+
 TEST(Todo, FromFileEntry) {
   auto fileEntry = RebaseFileEntry{.sha1 = "Sha1", .message = "message"};
   auto todo = Todo::from(fileEntry);
