@@ -8,8 +8,6 @@ using testing::Eq;
 using testing::Values;
 using namespace nyub::rebase;
 
-TEST(HelloTest, AssertThat) { ASSERT_THAT(7 * 6, Eq(42)); }
-
 TEST(RebaseFileEntry, Parse) {
   std::string gitLine = "pick Sha1 message";
   auto entry = RebaseFileEntry::parse(gitLine);
