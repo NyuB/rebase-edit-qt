@@ -13,8 +13,8 @@ public:
 
 class PanelWidgetTest : public testing::Test {
 protected:
-  int argc = 0;
-  char **argv = nullptr;
+  int argc = 2;
+  char *argv[2]{"-platform", "offscreen"};
   QApplication app = QApplication(argc, argv);
 };
 
@@ -23,4 +23,25 @@ TEST_F(PanelWidgetTest, CallbackCalledWhenStartRebase) {
   auto panel = PanelWidget(nullptr, Todo::TodoList{}, spy);
   panel.startRebase();
   ASSERT_EQ(spy->m_called, 1);
+}
+
+TEST_F(PanelWidgetTest, DisplaysTodoItems) {
+  auto spy = std::make_shared<TestCallback>();
+  auto panel = PanelWidget(nullptr,
+                           Todo::TodoList{
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "ABCDEF0123456789",
+                                   .message = "Hey",
+                                   .renamed = {},
+                               },
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "0123456789ABCDEF",
+                                   .message = "Hola",
+                                   .renamed = {},
+                               },
+                           },
+                           spy);
+  ASSERT_TRUE(panel.grab().save("resources/debug.png"));
 }
