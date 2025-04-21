@@ -11,10 +11,14 @@ public:
   int m_called = 0;
 };
 
-TEST(PanelWidget, CallbackCalledWhenStartRebase) {
+class PanelWidgetTest : public testing::Test {
+protected:
   int argc = 0;
   char **argv = nullptr;
-  QApplication app(argc, argv);
+  QApplication app = QApplication(argc, argv);
+};
+
+TEST_F(PanelWidgetTest, CallbackCalledWhenStartRebase) {
   auto spy = std::make_shared<TestCallback>();
   auto panel = PanelWidget(nullptr, Todo::TodoList{}, spy);
   panel.startRebase();
