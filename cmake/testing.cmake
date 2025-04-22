@@ -1,3 +1,10 @@
+include(CTest)
+
+# Silence a warning about missing DartConfiguration.tcl file when running CTest
+# from vscode (see
+# https://github.com/microsoft/vscode-cmake-tools/issues/3917#issuecomment-2381136228)
+enable_testing()
+
 include(FetchContent)
 FetchContent_Declare(
   googletest
