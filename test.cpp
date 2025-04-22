@@ -37,7 +37,8 @@ TEST(RebaseFileEntry, ParseMessageWithSpaces) {
 TEST(Todo, FromFileEntry) {
   auto fileEntry = RebaseFileEntry{.sha1 = "Sha1", .message = "message"};
   auto todo = Todo::from(fileEntry);
-  auto expected = Todo{.kind = "pick", .sha1 = "Sha1", .message = "message"};
+  auto expected =
+      Todo{.kind = "pick", .sha1 = "Sha1", .message = "message", .renamed = {}};
   ASSERT_EQ(todo, expected);
 }
 
@@ -47,7 +48,8 @@ TEST(TodoFileEntry, FromTodoZero) {
 }
 
 TEST(TodoFileEntry, FromTodoOne) {
-  auto todo = Todo{.kind = "pick", .sha1 = "Sha1", .message = "message"};
+  auto todo =
+      Todo{.kind = "pick", .sha1 = "Sha1", .message = "message", .renamed = {}};
   auto expected = TodoFile{"pick Sha1 message"};
   ASSERT_EQ(todoFile(Todo::TodoList{todo}), expected);
 }

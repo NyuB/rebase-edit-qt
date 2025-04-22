@@ -4,7 +4,7 @@
 namespace nyub {
 namespace rebase {
 
-PanelWidget::PanelWidget(QWidget *parent, const Todo::TodoList &init,
+PanelWidget::PanelWidget(QWidget *, const Todo::TodoList &init,
                          std::shared_ptr<TodoListCallback> callback)
     : m_callback(callback), m_todoList(init) {
   ui.setupUi(this);

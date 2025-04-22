@@ -7,7 +7,7 @@ using namespace nyub::rebase;
 
 class TestCallback : public TodoListCallback {
 public:
-  virtual void set(const Todo::TodoList &_) { m_called++; }
+  virtual void set(const Todo::TodoList &) { m_called++; }
   int m_called = 0;
 };
 

@@ -9,6 +9,14 @@ include(cmake/testing.cmake)
 # Compiler options
 add_library(compiler_options INTERFACE)
 target_compile_features(compiler_options INTERFACE cxx_std_20)
+# All warnings, warnings as errors
+set(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU,LCC>")
+set(msvc_cxx "$<COMPILE_LANG_AND_ID:CXX,MSVC>")
+target_compile_options(
+  compiler_options
+  INTERFACE
+    "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wall;-Wextra;-Wshadow;-Wformat=2;-Wunused;-Werror>>"
+    "$<${msvc_cxx}:$<BUILD_INTERFACE:-W3;-WX>>")
 
 # Lib
 add_library(Lib lib.cpp)
