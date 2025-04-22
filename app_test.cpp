@@ -14,7 +14,9 @@ public:
 class PanelWidgetTest : public testing::Test {
 protected:
   int argc = 2;
-  char *argv[2]{"-platform", "offscreen"};
+  char _platform[11] = "-platform\0";
+  char offscreen[11] = "offscreen\0";
+  char *argv[2]{_platform, offscreen};
   QApplication app = QApplication(argc, argv);
 };
 
