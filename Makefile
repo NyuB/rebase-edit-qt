@@ -6,7 +6,10 @@ run: build/Main.exe
 build/Main.exe: build
 
 build: FORCE
-	cmake --build build --target Main --preset default 
+	cmake --build build --target all --preset default
+
+test: build
+	ctest --test-dir build
 
 configure: FORCE
 	cmake --preset default .
