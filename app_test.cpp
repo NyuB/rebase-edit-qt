@@ -7,8 +7,15 @@ using namespace nyub::rebase;
 
 class TestCallback : public TodoListCallback {
 public:
-  virtual void set(const Todo::TodoList &) { m_called++; }
-  int m_called = 0;
+  virtual void set(const Todo::TodoList &todoList) {
+    m_called.push_back(todoList);
+  }
+  void wasCalledWith(const Todo::TodoList &todoList) {
+    ASSERT_THAT(m_called, testing::ElementsAre(todoList));
+  }
+
+private:
+  std::vector<Todo::TodoList> m_called{};
 };
 
 class PanelWidgetTest : public testing::Test {
@@ -20,11 +27,20 @@ protected:
   QApplication app = QApplication(argc, argv);
 };
 
-TEST_F(PanelWidgetTest, CallbackCalledWhenStartRebase) {
+TEST_F(PanelWidgetTest, StartRebase) {
   auto spy = std::make_shared<TestCallback>();
-  auto panel = PanelWidget(nullptr, Todo::TodoList{}, spy);
+  const auto todoList = Todo::TodoList{};
+  auto panel = PanelWidget(nullptr, todoList, spy);
   panel.startRebase();
-  ASSERT_EQ(spy->m_called, 1);
+  spy->wasCalledWith(todoList);
+}
+
+TEST_F(PanelWidgetTest, AbortRebase) {
+  auto spy = std::make_shared<TestCallback>();
+  const auto todoList = Todo::TodoList{};
+  auto panel = PanelWidget(nullptr, todoList, spy);
+  panel.abort();
+  spy->wasCalledWith(todoList);
 }
 
 TEST_F(PanelWidgetTest, DisplaysTodoItems) {
@@ -45,5 +61,5 @@ TEST_F(PanelWidgetTest, DisplaysTodoItems) {
                                },
                            },
                            spy);
-  ASSERT_TRUE(panel.grab().save("resources/debug.png"));
+  ASSERT_TRUE(panel.grab().save("resources/init.png"));
 }

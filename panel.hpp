@@ -24,11 +24,13 @@ public:
                        std::shared_ptr<TodoListCallback> callback);
 public slots:
   void startRebase();
+  void abort();
 
 private:
   Ui::Form ui;
-  std::shared_ptr<TodoListCallback> m_callback;
+  Todo::TodoList m_init;
   Todo::TodoList m_todoList;
+  std::shared_ptr<TodoListCallback> m_callback;
 };
 
 } // namespace rebase
