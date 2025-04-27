@@ -118,3 +118,58 @@ TEST_F(PanelWidgetTest, MoveUpDown) {
       },
   });
 }
+
+TEST_F(PanelWidgetTest, FixupPick) {
+  auto spy = std::make_shared<TestCallback>();
+  auto panel = PanelWidget(nullptr,
+                           Todo::TodoList{
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "A",
+                                   .message = "AAA",
+                                   .renamed = {},
+                               },
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "B",
+                                   .message = "BBB",
+                                   .renamed = {},
+                               },
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "C",
+                                   .message = "CCC",
+                                   .renamed = {},
+                               },
+                           },
+                           spy);
+  ASSERT_TRUE(panel.grab().save("resources/fixupPick_00_init.png"));
+  panel.setKind("fixup");
+  ASSERT_TRUE(panel.grab().save("resources/fixupPick_01_fixup.png"));
+  panel.down();
+  panel.setKind("fixup");
+  ASSERT_TRUE(panel.grab().save("resources/fixupPick_02_down_fixup.png"));
+  panel.setKind("pick");
+  ASSERT_TRUE(panel.grab().save("resources/fixupPick_03_down_fixup_pick.png"));
+  panel.startRebase();
+  spy->wasCalledWith(Todo::TodoList{
+      Todo{
+          .kind = "fixup",
+          .sha1 = "A",
+          .message = "AAA",
+          .renamed = {},
+      },
+      Todo{
+          .kind = "pick",
+          .sha1 = "B",
+          .message = "BBB",
+          .renamed = {},
+      },
+      Todo{
+          .kind = "pick",
+          .sha1 = "C",
+          .message = "CCC",
+          .renamed = {},
+      },
+  });
+}

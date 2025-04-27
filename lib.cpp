@@ -33,6 +33,25 @@ Todo::TodoList Todo::swap(const TodoList &todoList, size_t index_a,
   return result;
 }
 
+Todo::TodoList Todo::withKind(const TodoList &todoList, size_t index,
+                              std::string const &kind) {
+  if (index >= todoList.size())
+    return todoList;
+  auto copy = todoList;
+  copy[index] = copy[index].withKind(kind);
+  return copy;
+}
+
+Todo Todo::withKind(std::string const &newKind) {
+  constexpr static std::array<std::string, 3> supported{"fixup", "pick",
+                                                        "squash"};
+  auto copy = *this;
+  if (std::find(supported.begin(), supported.end(), newKind) == supported.end())
+    return copy;
+  copy.kind = newKind;
+  return copy;
+}
+
 std::optional<RebaseFileEntry>
 RebaseFileEntry::parse(const std::string &gitLine) {
   size_t firstSpace = gitLine.find(' ');

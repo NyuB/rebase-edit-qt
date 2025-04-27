@@ -23,11 +23,12 @@ class PanelWidget : public QWidget {
 public:
   explicit PanelWidget(QWidget *parent, const Todo::TodoList &init,
                        std::shared_ptr<TodoListCallback> callback);
-public slots:
+  void setKind(std::string const &kind);
   void up();
   void down();
   void moveUp();
   void moveDown();
+public slots:
   void startRebase();
   void abort();
 

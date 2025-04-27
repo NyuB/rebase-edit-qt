@@ -1,12 +1,23 @@
 #include "lib.hpp"
+#include <format>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <limits>
 #include <optional>
 
+using testing::ElementsAre;
 using testing::Eq;
 using testing::Values;
 using namespace nyub::rebase;
+
+namespace nyub {
+namespace rebase {
+std::ostream &operator<<(std::ostream &os, Todo todo) {
+  return os << std::format("{} {} {} ({})", todo.kind, todo.sha1, todo.message,
+                           todo.renamed.value_or("<not renamed>"));
+}
+} // namespace rebase
+} // namespace nyub
 
 TEST(RebaseFileEntry, Parse) {
   std::string gitLine = "pick Sha1 message";
@@ -101,6 +112,33 @@ TEST(TodoList, SwapEdge) {
             twoItemsTodoList);
   ASSERT_EQ(Todo::swap(twoItemsTodoList, inBoundIndex, outOfBoundIndex),
             twoItemsTodoList);
+}
+
+TEST(TodoList, WithKindFixup) {
+  auto todoList = Todo::TodoList{
+      Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+  };
+
+  ASSERT_THAT(
+      Todo::withKind(todoList, 0, "fixup"),
+      testing::ElementsAre(Todo{
+          .kind = "fixup", .sha1 = "A", .message = "MsgA", .renamed = {}}));
+}
+
+TEST(TodoList, WithKindInvalid) {
+  auto todoList = Todo::TodoList{
+      Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+  };
+
+  ASSERT_EQ(Todo::withKind(todoList, 0, "oops"), todoList);
+}
+
+TEST(TodoList, WithKindEdge) {
+  auto todoList = Todo::TodoList{
+      Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+  };
+
+  ASSERT_EQ(Todo::withKind(todoList, 1, "fixup"), todoList);
 }
 
 TEST(TodoFileEntry, FromTodoZero) {

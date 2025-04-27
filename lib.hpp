@@ -22,8 +22,8 @@ struct RebaseFileEntry {
 
 //! Work in progress on rebase items
 struct Todo {
-  using TodoList = std::vector<Todo>;
-  std::string kind;
+  using TodoList = std::vector<Todo>; // TODO dedicated class
+  std::string kind;                   // TODO use typed enum/variant
   std::string sha1;
   std::string message;
   std::optional<std::string> renamed;
@@ -31,7 +31,12 @@ struct Todo {
   static TodoList from(const RebaseFileEntry::RebaseFile &file);
   static TodoList swap(const TodoList &todoList, size_t index_a,
                        size_t index_b);
+  static TodoList withKind(const TodoList &todoList, size_t index,
+                           std::string const &kind);
   bool operator==(const Todo &other) const = default;
+
+private:
+  Todo withKind(std::string const &newKind);
 };
 
 //! Output given back to git by the rebase editor

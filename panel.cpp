@@ -21,15 +21,20 @@ PanelWidget::PanelWidget(QWidget *, const Todo::TodoList &init,
 void PanelWidget::update() {
   ui.todoList->clear();
   for (const auto &item : m_todoList) {
-    new QListWidgetItem(
-        QString((item.kind + " " + item.sha1 + " " + item.message).c_str()),
-        ui.todoList);
+    new QListWidgetItem(QString::fromStdString(std::format(
+                            "{} {} {}", item.kind, item.sha1, item.message)),
+                        ui.todoList);
   }
   if (m_todoList.size() > 0) {
     const auto selectedBackGround =
         ui.todoList->item(m_selected)->background().color();
     ui.todoList->item(m_selected)->setBackground(selectedBackGround.lighter());
   }
+}
+
+void PanelWidget::setKind(std::string const &kind) {
+  m_todoList = Todo::withKind(m_todoList, m_selected, kind);
+  update();
 }
 
 void PanelWidget::up() {
@@ -84,6 +89,12 @@ void PanelWidget::keyReleaseEvent(QKeyEvent *keyPressed) {
     } else {
       down();
     }
+    break;
+  case Qt::Key_F:
+    setKind("fixup");
+    break;
+  case Qt::Key_P:
+    setKind("pick");
     break;
   }
   QWidget::keyPressEvent(keyPressed);
