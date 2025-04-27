@@ -25,15 +25,22 @@ void PanelWidget::update() {
         QString((item.kind + " " + item.sha1 + " " + item.message).c_str()),
         ui.todoList);
   }
+  if (m_todoList.size() > 0) {
+    const auto selectedBackGround =
+        ui.todoList->item(m_selected)->background().color();
+    ui.todoList->item(m_selected)->setBackground(selectedBackGround.lighter());
+  }
 }
 
 void PanelWidget::up() {
   if (m_selected != 0)
     m_selected--;
+  update();
 }
 
 void PanelWidget::down() {
   m_selected = std::min(m_selected + 1, m_todoList.size() - 1);
+  update();
 }
 
 void PanelWidget::moveUp() {
