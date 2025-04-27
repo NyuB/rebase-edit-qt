@@ -2,6 +2,7 @@
 #define NYUB_REBASE_PANEL_HPP
 #include "lib.hpp"
 #include "ui_panel.h"
+#include <QKeyEvent>
 #include <QLabel>
 #include <vector>
 
@@ -23,14 +24,23 @@ public:
   explicit PanelWidget(QWidget *parent, const Todo::TodoList &init,
                        std::shared_ptr<TodoListCallback> callback);
 public slots:
+  void up();
+  void down();
+  void moveUp();
+  void moveDown();
   void startRebase();
   void abort();
 
+protected:
+  void keyReleaseEvent(QKeyEvent *keyPressed) override;
+
 private:
+  void update();
   Ui::Panel ui;
   Todo::TodoList m_init;
   Todo::TodoList m_todoList;
   std::shared_ptr<TodoListCallback> m_callback;
+  size_t m_selected = 0;
 };
 
 } // namespace rebase

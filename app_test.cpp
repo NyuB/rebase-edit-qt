@@ -1,5 +1,6 @@
 #include "lib.hpp"
 #include "panel.hpp"
+#include <QKeyEvent>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -62,4 +63,58 @@ TEST_F(PanelWidgetTest, DisplaysTodoItems) {
                            },
                            spy);
   ASSERT_TRUE(panel.grab().save("resources/init.png"));
+}
+
+TEST_F(PanelWidgetTest, MoveUpDown) {
+  auto spy = std::make_shared<TestCallback>();
+  auto panel = PanelWidget(nullptr,
+                           Todo::TodoList{
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "A",
+                                   .message = "AAA",
+                                   .renamed = {},
+                               },
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "B",
+                                   .message = "BBB",
+                                   .renamed = {},
+                               },
+                               Todo{
+                                   .kind = "pick",
+                                   .sha1 = "C",
+                                   .message = "CCC",
+                                   .renamed = {},
+                               },
+                           },
+                           spy);
+  ASSERT_TRUE(panel.grab().save("resources/moveUpDown_00_init.png"));
+  panel.moveDown();
+  ASSERT_TRUE(panel.grab().save("resources/moveUpDown_01_down.png"));
+  panel.moveDown();
+  ASSERT_TRUE(panel.grab().save("resources/moveUpDown_02_down_down.png"));
+  panel.moveUp();
+  ASSERT_TRUE(panel.grab().save("resources/moveUpDown_04_down_down_up.png"));
+  panel.startRebase();
+  spy->wasCalledWith(Todo::TodoList{
+      Todo{
+          .kind = "pick",
+          .sha1 = "B",
+          .message = "BBB",
+          .renamed = {},
+      },
+      Todo{
+          .kind = "pick",
+          .sha1 = "A",
+          .message = "AAA",
+          .renamed = {},
+      },
+      Todo{
+          .kind = "pick",
+          .sha1 = "C",
+          .message = "CCC",
+          .renamed = {},
+      },
+  });
 }

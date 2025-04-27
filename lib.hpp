@@ -29,6 +29,8 @@ struct Todo {
   std::optional<std::string> renamed;
   static Todo from(const RebaseFileEntry &fileEntry);
   static TodoList from(const RebaseFileEntry::RebaseFile &file);
+  static TodoList swap(const TodoList &todoList, size_t index_a,
+                       size_t index_b);
   bool operator==(const Todo &other) const = default;
 };
 

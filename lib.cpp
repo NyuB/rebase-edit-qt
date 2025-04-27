@@ -1,4 +1,5 @@
 #include "lib.hpp"
+#include <algorithm>
 #include <format>
 
 namespace nyub {
@@ -18,6 +19,17 @@ Todo::TodoList Todo::from(const RebaseFileEntry::RebaseFile &file) {
   for (const auto &item : file) {
     result.push_back(from(item));
   }
+  return result;
+}
+
+Todo::TodoList Todo::swap(const TodoList &todoList, size_t index_a,
+                          size_t index_b) {
+  if (index_a == index_b)
+    return todoList;
+  if (index_a >= todoList.size() || index_b >= todoList.size())
+    return todoList;
+  TodoList result = todoList;
+  std::swap(*(result.begin() + index_a), *(result.begin() + index_b));
   return result;
 }
 

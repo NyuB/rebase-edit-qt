@@ -42,6 +42,67 @@ TEST(Todo, FromFileEntry) {
   ASSERT_EQ(todo, expected);
 }
 
+TEST(TodoList, SwapZero) {
+  auto emptyTodoList = Todo::TodoList{};
+  ASSERT_EQ(Todo::swap(emptyTodoList, 0, 1), emptyTodoList);
+}
+
+TEST(TodoList, SwapOne) {
+  auto singleItemTodoList = Todo::TodoList{Todo{
+      .kind = "pick", .sha1 = "Sha1", .message = "message", .renamed = {}}};
+  ASSERT_EQ(Todo::swap(singleItemTodoList, 0, 1), singleItemTodoList);
+}
+
+TEST(TodoList, SwapTwo) {
+  auto singleItemTodoList = Todo::TodoList{
+      Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+      Todo{.kind = "pick", .sha1 = "B", .message = "MsgB", .renamed = {}},
+  };
+  ASSERT_THAT(
+      Todo::swap(singleItemTodoList, 0, 1),
+      testing::ElementsAre(
+          Todo{.kind = "pick", .sha1 = "B", .message = "MsgB", .renamed = {}},
+          Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}}
+          //,
+          ));
+}
+
+TEST(TodoList, SwapMany) {
+  auto singleItemTodoList = Todo::TodoList{
+      Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+      Todo{.kind = "pick", .sha1 = "B", .message = "MsgB", .renamed = {}},
+      Todo{.kind = "pick", .sha1 = "C", .message = "MsgC", .renamed = {}},
+      Todo{.kind = "pick", .sha1 = "D", .message = "MsgD", .renamed = {}},
+      Todo{.kind = "pick", .sha1 = "E", .message = "MsgE", .renamed = {}},
+  };
+
+  ASSERT_THAT(
+      Todo::swap(singleItemTodoList, 1, 4),
+      testing::ElementsAre(
+          Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+          Todo{.kind = "pick", .sha1 = "E", .message = "MsgE", .renamed = {}},
+          Todo{.kind = "pick", .sha1 = "C", .message = "MsgC", .renamed = {}},
+          Todo{.kind = "pick", .sha1 = "D", .message = "MsgD", .renamed = {}},
+          Todo{.kind = "pick", .sha1 = "B", .message = "MsgB", .renamed = {}}
+          //,
+          ));
+}
+
+TEST(TodoList, SwapEdge) {
+  auto twoItemsTodoList = Todo::TodoList{
+      Todo{.kind = "pick", .sha1 = "A", .message = "MsgA", .renamed = {}},
+      Todo{.kind = "pick", .sha1 = "B", .message = "MsgB", .renamed = {}},
+  };
+
+  const auto inBoundIndex = 1;
+  const auto outOfBoundIndex = 2;
+
+  ASSERT_EQ(Todo::swap(twoItemsTodoList, outOfBoundIndex, inBoundIndex),
+            twoItemsTodoList);
+  ASSERT_EQ(Todo::swap(twoItemsTodoList, inBoundIndex, outOfBoundIndex),
+            twoItemsTodoList);
+}
+
 TEST(TodoFileEntry, FromTodoZero) {
   auto todos = Todo::TodoList{};
   ASSERT_EQ(todoFile(todos), TodoFile{});
