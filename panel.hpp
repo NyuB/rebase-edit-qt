@@ -28,9 +28,13 @@ public:
   void down();
   void moveUp();
   void moveDown();
+  void startRename();
+  void rename(std::string const &newName);
 public slots:
   void startRebase();
   void abort();
+private slots:
+  void itemChanged(QListWidgetItem *newName);
 
 protected:
   void keyReleaseEvent(QKeyEvent *keyPressed) override;
@@ -42,6 +46,7 @@ private:
   Todo::TodoList m_todoList;
   std::shared_ptr<TodoListCallback> m_callback;
   size_t m_selected = 0;
+  bool m_renaming = false;
 };
 
 } // namespace rebase

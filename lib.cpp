@@ -33,6 +33,15 @@ Todo::TodoList Todo::swap(const TodoList &todoList, size_t index_a,
   return result;
 }
 
+Todo::TodoList Todo::renamedTo(const TodoList &todoList, size_t index,
+                               std::string const &newName) {
+  if (index >= todoList.size())
+    return todoList;
+  auto copy = todoList;
+  copy[index] = copy[index].renamedTo(newName);
+  return copy;
+}
+
 Todo::TodoList Todo::withKind(const TodoList &todoList, size_t index,
                               std::string const &kind) {
   if (index >= todoList.size())
@@ -42,7 +51,17 @@ Todo::TodoList Todo::withKind(const TodoList &todoList, size_t index,
   return copy;
 }
 
-Todo Todo::withKind(std::string const &newKind) {
+Todo Todo::renamedTo(std::string const &newName) const {
+  auto copy = *this;
+  if (newName == message) {
+    copy.renamed = {};
+  } else {
+    copy.renamed = newName;
+  }
+  return copy;
+}
+
+Todo Todo::withKind(std::string const &newKind) const {
   constexpr static std::array<std::string, 3> supported{"fixup", "pick",
                                                         "squash"};
   auto copy = *this;

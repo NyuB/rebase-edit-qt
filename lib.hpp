@@ -31,12 +31,15 @@ struct Todo {
   static TodoList from(const RebaseFileEntry::RebaseFile &file);
   static TodoList swap(const TodoList &todoList, size_t index_a,
                        size_t index_b);
+  static TodoList renamedTo(const TodoList &todoList, size_t index,
+                            std::string const &newName);
   static TodoList withKind(const TodoList &todoList, size_t index,
                            std::string const &kind);
   bool operator==(const Todo &other) const = default;
 
 private:
-  Todo withKind(std::string const &newKind);
+  Todo renamedTo(std::string const &newName) const;
+  Todo withKind(std::string const &newKind) const;
 };
 
 //! Output given back to git by the rebase editor

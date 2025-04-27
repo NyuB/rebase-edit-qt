@@ -1,5 +1,6 @@
 #include "panel.hpp"
 #include <QString>
+#include <iostream>
 
 namespace nyub {
 namespace rebase {
@@ -15,15 +16,26 @@ PanelWidget::PanelWidget(QWidget *, const Todo::TodoList &init,
   connect(ui.startRebaseButton, QPushButton::clicked, this,
           PanelWidget::startRebase);
   connect(ui.abortRebaseButton, QPushButton::clicked, this, PanelWidget::abort);
+  connect(ui.todoList, QListWidget::itemChanged, this,
+          PanelWidget::itemChanged);
   update();
+}
+
+std::string itemText(const Todo &item) {
+  if (!item.renamed.has_value()) {
+    return std::format("{} {} {}", item.kind, item.sha1, item.message);
+  } else {
+    return std::format("{} {} {} (renamed)", item.kind, item.sha1,
+                       item.renamed.value());
+  }
 }
 
 void PanelWidget::update() {
   ui.todoList->clear();
   for (const auto &item : m_todoList) {
-    new QListWidgetItem(QString::fromStdString(std::format(
-                            "{} {} {}", item.kind, item.sha1, item.message)),
-                        ui.todoList);
+    auto widget = new QListWidgetItem(QString::fromStdString(itemText(item)),
+                                      ui.todoList);
+    widget->setFlags(widget->flags() | Qt::ItemIsEditable);
   }
   if (m_todoList.size() > 0) {
     const auto selectedBackGround =
@@ -64,6 +76,36 @@ void PanelWidget::moveDown() {
   update();
 }
 
+void PanelWidget::startRename() {
+  if (m_todoList.empty())
+    return;
+  m_renaming = true;
+  ui.todoList->editItem(ui.todoList->item(m_selected));
+}
+
+void PanelWidget::rename(std::string const &newName) {
+  m_todoList = Todo::renamedTo(m_todoList, m_selected, newName);
+  update();
+}
+
+// Detect end of editing from QListWidget
+void PanelWidget::itemChanged(QListWidgetItem *item) {
+  // /!\ DO NOT call update() from this method this since it would trigger
+  // itemChanged() again
+  if (m_renaming && static_cast<size_t>(ui.todoList->row(item)) ==
+                        m_selected) { // Only act if the eent correspond to the
+                                      // end of a current edit
+    m_renaming = false;
+    const auto &selected = m_todoList[m_selected];
+    // Since the entire item text is editable, strip the meta prefix from the
+    // renamed text
+    const auto prefix = std::format("{} {} ", selected.kind, selected.sha1);
+    m_todoList = Todo::renamedTo(
+        m_todoList, m_selected,
+        item->text().replace(QString::fromStdString(prefix), "").toStdString());
+  }
+}
+
 void PanelWidget::startRebase() {
   m_callback->set(m_todoList);
   close();
@@ -95,6 +137,10 @@ void PanelWidget::keyReleaseEvent(QKeyEvent *keyPressed) {
     break;
   case Qt::Key_P:
     setKind("pick");
+    break;
+  case Qt::Key_R:
+  case Qt::Key_F2:
+    startRename();
     break;
   }
   QWidget::keyPressEvent(keyPressed);
