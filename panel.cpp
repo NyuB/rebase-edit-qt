@@ -135,6 +135,9 @@ void PanelWidget::keyReleaseEvent(QKeyEvent *keyPressed) {
   case Qt::Key_F:
     setKind("fixup");
     break;
+  case Qt::Key_S:
+    setKind("squash");
+    break;
   case Qt::Key_P:
     setKind("pick");
     break;
