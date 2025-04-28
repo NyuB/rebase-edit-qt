@@ -1,0 +1,26 @@
+2025-04-28 07:33:33,959 - aqt.helper - DEBUG - helper 18892 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw/Updates.xml.sha256
+2025-04-28 07:34:40,225 - aqt.helper - DEBUG - helper 29904 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1310/Updates.xml.sha256
+2025-04-28 07:35:04,589 - aqt.helper - DEBUG - helper 17156 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingwOOPS/Updates.xml.sha256
+2025-04-28 07:35:04,819 - aqt.helper - DEBUG - helper 17156 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingwOOPS/Updates.xml.sha256
+2025-04-28 07:35:05,031 - aqt.helper - DEBUG - helper 17156 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingwOOPS/Updates.xml.sha256
+2025-04-28 07:35:05,247 - aqt.helper - DEBUG - helper 17156 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingwOOPS/Updates.xml.sha256
+2025-04-28 07:35:05,456 - aqt.helper - DEBUG - helper 17156 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingwOOPS/Updates.xml.sha256
+2025-04-28 07:35:05,666 - aqt.main - ERROR - installer 17156 Failed to download checksum for the file 'Updates.xml' from mirrors '['https://download.qt.io']
+==============================Suggested follow-up:==============================
+* Check your internet connection
+* Consider modifying `requests.max_retries_to_retrieve_hash` in settings.ini
+* Consider modifying `mirrors.trusted_mirrors` in settings.ini (see https://aqtinstall.readthedocs.io/en/stable/configuration.html#configuration)
+* Please use 'aqt list-tool windows desktop' to check what tools are available.
+2025-04-28 07:35:10,233 - aqt.helper - DEBUG - helper 8848 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1310/Updates.xml.sha256
+2025-04-28 07:35:41,290 - aqt.helper - DEBUG - helper 17332 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1310/Updates.xml.sha256
+2025-04-28 07:36:00,654 - aqt.helper - DEBUG - helper 29564 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_qt.tools.win64.mingw1310/Updates.xml.sha256
+2025-04-28 07:36:00,877 - aqt.helper - DEBUG - helper 29564 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_qt.tools.win64.mingw1310/Updates.xml.sha256
+2025-04-28 07:36:01,114 - aqt.helper - DEBUG - helper 29564 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_qt.tools.win64.mingw1310/Updates.xml.sha256
+2025-04-28 07:36:01,319 - aqt.helper - DEBUG - helper 29564 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_qt.tools.win64.mingw1310/Updates.xml.sha256
+2025-04-28 07:36:01,535 - aqt.helper - DEBUG - helper 29564 Attempt to download checksum at https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_qt.tools.win64.mingw1310/Updates.xml.sha256
+2025-04-28 07:36:01,749 - aqt.main - ERROR - installer 29564 Failed to download checksum for the file 'Updates.xml' from mirrors '['https://download.qt.io']
+==============================Suggested follow-up:==============================
+* Check your internet connection
+* Consider modifying `requests.max_retries_to_retrieve_hash` in settings.ini
+* Consider modifying `mirrors.trusted_mirrors` in settings.ini (see https://aqtinstall.readthedocs.io/en/stable/configuration.html#configuration)
+* Please use 'aqt list-tool windows desktop' to check what tools are available.

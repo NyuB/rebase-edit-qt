@@ -1,5 +1,6 @@
 PY=py
 INSTALL_ROOT=$(CURDIR)/out
+CXX_COMPILER=g++
 
 install: build/Main.exe scripts/newbase.bat
 	cmake --install build --prefix $(realpath $(INSTALL_ROOT))/newbase
@@ -16,7 +17,7 @@ test: build
 	ctest --test-dir build
 
 configure: FORCE
-	cmake --preset gcc .
+	cmake -DCMAKE_CXX_COMPILER=$(CXX_COMPILER) --preset gcc .
 FORCE:
 	
 fmt:
