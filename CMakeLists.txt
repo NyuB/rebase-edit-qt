@@ -24,7 +24,7 @@ target_include_directories(Lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Lib PRIVATE compiler_options)
 
 # Ui
-qt_add_library(Ui panel.cpp)
+add_library(Ui panel.cpp)
 target_link_qt_libraries(Ui)
 target_include_directories(Ui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Ui PUBLIC Lib)
@@ -32,12 +32,15 @@ target_link_libraries(Ui PRIVATE compiler_options)
 set(UI_AUTOGEN_INCLUDE ${CMAKE_BINARY_DIR}/Ui_autogen/include)
 
 # Main
-qt_add_executable(Main main.cpp)
+add_executable(Main main.cpp)
 target_include_directories(Main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
                                         ${UI_AUTOGEN_INCLUDE})
 target_link_libraries(Main PRIVATE Lib Ui)
 target_link_libraries(Main PRIVATE compiler_options)
-install(TARGETS Main)
+
+install_qt_executable_with_dependencies(Main)
+
+install(FILES ${CMAKE_SOURCE_DIR}/scripts/newbase.bat DESTINATION ..)
 
 # Test
 add_executable(Test test.cpp)

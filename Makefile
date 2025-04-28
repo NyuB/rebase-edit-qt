@@ -1,4 +1,8 @@
 PY=py
+INSTALL_ROOT=$(CURDIR)/out
+
+install: build/Main.exe scripts/newbase.bat
+	cmake --install build --prefix $(realpath $(INSTALL_ROOT))/newbase
 
 run: build/Main.exe
 	build/Main.exe test-rebase-file.txt
@@ -6,13 +10,13 @@ run: build/Main.exe
 build/Main.exe: build
 
 build: FORCE
-	cmake --build build --target all --preset default
+	cmake --build build --target all --preset gcc
 
 test: build
 	ctest --test-dir build
 
 configure: FORCE
-	cmake --preset default .
+	cmake --preset gcc .
 FORCE:
 	
 fmt:
