@@ -145,7 +145,8 @@ void PanelWidget::keyReleaseEvent(QKeyEvent *keyPressed) {
   case Qt::Key_F2: // Mimics IntelliJ keybinding for rename
     startRename();
     break;
-  case Qt::Key_Enter:
+  case Qt::Key_Enter: // Does not seem to be detected ...
+  case Qt::Key_W:
     if (keyPressed->modifiers().testFlag(Qt::ControlModifier))
       startRebase();
     break;
