@@ -142,8 +142,16 @@ void PanelWidget::keyReleaseEvent(QKeyEvent *keyPressed) {
     setKind("pick");
     break;
   case Qt::Key_R:
-  case Qt::Key_F2:
+  case Qt::Key_F2: // Mimics IntelliJ keybinding for rename
     startRename();
+    break;
+  case Qt::Key_Enter:
+    if (keyPressed->modifiers().testFlag(Qt::ControlModifier))
+      startRebase();
+    break;
+  case Qt::Key_Q:
+    if (keyPressed->modifiers().testFlag(Qt::ControlModifier))
+      abort();
     break;
   }
   QWidget::keyPressEvent(keyPressed);
