@@ -1,5 +1,7 @@
 # Rebase++: an interactive rebase editor project to learn myself some C++ & Qt
 
+![Screenshot](resources/readme_screen.png)
+
 ## Build
 
 ```shell
