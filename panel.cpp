@@ -117,6 +117,8 @@ void PanelWidget::abort() {
 }
 
 void PanelWidget::keyReleaseEvent(QKeyEvent *keyPressed) {
+  if (m_renaming)
+    return; // Do not catch typing keys
   switch (keyPressed->key()) {
   case Qt::Key_Up:
     if (keyPressed->modifiers().testFlag(Qt::AltModifier)) {
