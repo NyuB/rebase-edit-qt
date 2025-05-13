@@ -24,7 +24,7 @@ target_include_directories(Lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Lib PRIVATE compiler_options)
 
 # Ui
-add_library(Ui panel.cpp)
+add_library(Ui panel.cpp panel.ui)
 target_link_qt_libraries(Ui)
 target_include_directories(Ui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Ui PUBLIC Lib)
