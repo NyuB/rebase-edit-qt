@@ -12,23 +12,29 @@
 namespace nyub {
 namespace rebase {
 
+//! RAII-friendly wrapper around a wren static method handle
+class WrenMethodBundle {
+public:
+  WrenMethodBundle(WrenVM *vm_MustOutliveThis, std::string const &module,
+                   std::string const &className, std::string const &signature);
+
+  //! Call the method assuming it is taking 0 argument
+  void call0();
+
+  ~WrenMethodBundle();
+
+protected:
+  WrenVM *vm{nullptr};
+  WrenHandle *classHandle{nullptr};
+  WrenHandle *methodHandle{nullptr};
+};
+
+//! RAII-friendly wrapper around a wren VM
 class WrenBundle {
 public:
-  WrenBundle() {
-    WrenConfiguration config;
-    wrenInitConfiguration(&config);
-    config.writeFn = writeFn;
-    config.errorFn = errorFn;
+  WrenBundle();
 
-    vm = wrenNewVM(&config); // Even though it takes an address, this copies the
-                             // config, no need to keep it around
-  }
-  ~WrenBundle() {
-    if (vm) {
-      wrenFreeVM(vm);
-      vm = nullptr;
-    }
-  }
+  ~WrenBundle();
 
   WrenVM *vm{nullptr};
 
@@ -57,26 +63,24 @@ private:
 class WithWrenScriptWidget : public QWidget {
   Q_OBJECT
 public:
-  explicit WithWrenScriptWidget(QWidget *parent, QString const &p_script)
-      : QWidget(parent), script(p_script) {
-    button = new QPushButton("CLICK", this);
-    runScript(script);
-    watcher.addPath(script);
-    connect(&watcher, &QFileSystemWatcher::fileChanged, this,
-            &WithWrenScriptWidget::runScript);
-    connect(button, &QPushButton::clicked, this,
-            [this](bool) { runScript(script); });
-  }
+  explicit WithWrenScriptWidget(QWidget *parent, QString const &p_script);
 public slots:
   void setText(QString const &text) { button->setText(text); }
 
 private:
-  void wrenBind_setText();
-  void runScript(QString const &path);
+  void loadScript(QString const &path);
+  void runScript();
+
+  //! Create a fresh module each time we load a script to avoid
+  //! 'already defined variable' errors
+  std::string newModuleName();
+
+  WrenBundle wren{};
   QPushButton *button;
   QString script;
-  WrenBundle wren;
-  QFileSystemWatcher watcher;
+  QFileSystemWatcher watcher{};
+  std::unique_ptr<WrenMethodBundle> doMethod{nullptr};
+  size_t loadCount{0};
 };
 
 } // namespace rebase
