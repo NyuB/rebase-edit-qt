@@ -31,7 +31,8 @@ target_include_directories(Wren PRIVATE wren/src/vm wren/src/optional)
 target_include_directories(Wren PUBLIC wren/src/include)
 target_compile_definitions(
   Wren
-  PRIVATE WREN_OPT_META=0
+  PRIVATE DEBUG=1
+          WREN_OPT_META=0
           WREN_OPT_RANDOM=0 # Skip optional wren features
           register= # Not a C++ keyworkd anymore since C++17, this MUST remain
                     # private not to mess with the stdlib. TODO compile Wren as
@@ -45,7 +46,7 @@ target_include_directories(Ui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Ui PUBLIC Lib)
 target_link_libraries(Ui PRIVATE compiler_options)
 target_link_libraries(Ui PUBLIC Wren)
-set(UI_AUTOGEN_INCLUDE ${CMAKE_BINARY_DIR}/Ui_autogen/include)
+set(UI_AUTOGEN_INCLUDE ${CMAKE_BINARY_DIR}/Ui_autogen/include_$<CONFIG>)
 
 # Main
 add_executable(Main main.cpp)
