@@ -13,11 +13,11 @@ PanelWidget::PanelWidget(QWidget *, const Todo::TodoList &init,
   ui.todoList->setSelectionMode(QAbstractItemView::NoSelection);
   ui.startRebaseButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
   ui.abortRebaseButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
-  connect(ui.startRebaseButton, QPushButton::clicked, this,
-          PanelWidget::startRebase);
-  connect(ui.abortRebaseButton, QPushButton::clicked, this, PanelWidget::abort);
-  connect(ui.todoList, QListWidget::itemChanged, this,
-          PanelWidget::itemChanged);
+  connect(ui.startRebaseButton, &QPushButton::clicked, this,
+          &PanelWidget::startRebase);
+  connect(ui.abortRebaseButton, &QPushButton::clicked, this,&PanelWidget::abort);
+  connect(ui.todoList, &QListWidget::itemChanged, this,
+          &PanelWidget::itemChanged);
   update();
 }
 
