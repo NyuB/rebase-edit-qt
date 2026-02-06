@@ -1,6 +1,5 @@
 #include "panel.hpp"
 #include <QString>
-#include <iostream>
 
 namespace nyub {
 namespace rebase {
@@ -15,7 +14,8 @@ PanelWidget::PanelWidget(QWidget *, const Todo::TodoList &init,
   ui.abortRebaseButton->setFocusPolicy(Qt::FocusPolicy::NoFocus);
   connect(ui.startRebaseButton, &QPushButton::clicked, this,
           &PanelWidget::startRebase);
-  connect(ui.abortRebaseButton, &QPushButton::clicked, this,&PanelWidget::abort);
+  connect(ui.abortRebaseButton, &QPushButton::clicked, this,
+          &PanelWidget::abort);
   connect(ui.todoList, &QListWidget::itemChanged, this,
           &PanelWidget::itemChanged);
   update();
