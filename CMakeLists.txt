@@ -23,12 +23,28 @@ add_library(Lib lib.cpp)
 target_include_directories(Lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Lib PRIVATE compiler_options)
 
+# Wren
+file(GLOB WREN_SRC "wren/src/vm/*.c")
+set_source_files_properties(${WREN_SRC} PROPERTIES LANGUAGE CXX)
+add_library(Wren ${WREN_SRC})
+target_include_directories(Wren PRIVATE wren/src/vm wren/src/optional)
+target_include_directories(Wren PUBLIC wren/src/include)
+target_compile_definitions(
+  Wren
+  PRIVATE WREN_OPT_META=0
+          WREN_OPT_RANDOM=0 # Skip optional wren features
+          register= # Not a C++ keyworkd anymore since C++17, this MUST remain
+                    # private not to mess with the stdlib. TODO compile Wren as
+                    # C or replace register in wren files manually
+)
+
 # Ui
-add_library(Ui panel.cpp panel.ui)
+add_library(Ui panel.cpp panel.ui wren_scripted.cpp)
 target_link_qt_libraries(Ui)
 target_include_directories(Ui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(Ui PUBLIC Lib)
 target_link_libraries(Ui PRIVATE compiler_options)
+target_link_libraries(Ui PUBLIC Wren)
 set(UI_AUTOGEN_INCLUDE ${CMAKE_BINARY_DIR}/Ui_autogen/include)
 
 # Main

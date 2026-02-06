@@ -1,8 +1,8 @@
 #include "lib.hpp"
 #include "panel.hpp"
+#include "wren_scripted.hpp"
 #include <QApplication>
 #include <fstream>
-#include <iostream>
 
 using namespace nyub::rebase;
 
@@ -47,7 +47,9 @@ int main(int argc, char **argv) {
   auto callback =
       std::make_shared<WriteRebaseFileAtAppExit>(argv[1], Todo::from(input));
   QApplication app(argc, argv);
-  PanelWidget panel(nullptr, Todo::from(input), callback);
-  panel.show();
+  // PanelWidget panel(nullptr, Todo::from(input), callback);
+  // panel.show();
+  WithWrenScriptWidget w(nullptr, "./hello.wren");
+  w.show();
   return app.exec();
 }
